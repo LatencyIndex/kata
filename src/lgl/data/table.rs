@@ -1,15 +1,17 @@
 use std::{fmt::Debug, str::FromStr};
 
-/// Read whitespace-separated cells into a table.
-pub fn to_table_whitespace(s: &str) -> Vec<Vec<&str>> {
+/// Convert text to a row-major table, with whitespace separated cells.
+pub fn read_rows_whitespace(s: &str) -> Vec<Vec<&str>> {
     s.lines().map(|l| l.split_whitespace().collect()).collect()
 }
 
-pub fn to_char_table(s: &str) -> Vec<Vec<char>> {
+/// Convert text to a row-major table, where each char is its own cell.
+pub fn read_rows_chars(s: &str) -> Vec<Vec<char>> {
     s.lines().map(|l| l.chars().collect()).collect()
 }
 
-pub fn to_table<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
+/// Convert text to a row-major table, with cells separated by 'sep'.
+pub fn read_rows<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
     s.lines().map(|l| l.split(sep).collect()).collect()
 }
 
@@ -36,7 +38,7 @@ where
     T: FromStr,
     <T as FromStr>::Err: Debug,
 {
-    to_table_whitespace(input)
+    read_rows_whitespace(input)
         .iter()
         .map(|col| col.iter().map(|x| x.parse().unwrap()).collect())
         .collect()

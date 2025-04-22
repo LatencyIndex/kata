@@ -61,7 +61,7 @@ fn count_word(needle: &str, hay: &str) -> usize {
     .into_iter()
     .map(|(i, j)| Vec2(i, j))
     .collect();
-    let hay: Vec<Vec<char>> = table::to_char_table(hay);
+    let hay: Vec<Vec<char>> = table::read_rows_chars(hay);
     let mut hits = 0;
     for origin in get_origins(&hay) {
         for dir in dirs.iter() {
@@ -102,7 +102,7 @@ pub fn part1() -> usize {
 /// ```
 pub fn part2() -> usize {
     let hay = std::fs::read_to_string(INPUT).unwrap();
-    let hay = table::to_char_table(&hay);
+    let hay = table::read_rows_chars(&hay);
     get_origins(&hay)
         .into_iter()
         .filter(|origin| is_x_mas(&hay, *origin))
