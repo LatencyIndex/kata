@@ -19,7 +19,7 @@ fn parse_input(input: &str) -> (Vec<&str>, Vec<&str>) {
 fn ways_to_match(available: &[&str], requested: &str) -> usize {
     let n = requested.len();
     // Nb. ways to match string up to index i.
-    let mut nb_ways = Vec::from_iter(std::iter::repeat_n(0usize, n + 1));
+    let mut nb_ways = vec![0; n + 1];
     // String up to index 0 (i.e. the empty string) can be matched in 1 way.
     nb_ways[0] = 1;
     for i in 0..n {
