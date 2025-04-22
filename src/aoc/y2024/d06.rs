@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::lgl::data::table::{self, Ix2s};
+use crate::lgl::data::{index::Ix2s, table};
 
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 struct Guard {

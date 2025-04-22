@@ -1,4 +1,4 @@
-use crate::lgl::data::table::{self, all_indexes, Ix2s};
+use crate::lgl::data::{index::Ix2s, table};
 
 fn is_needle(needle: &str, table: &[Vec<char>], origin: Ix2s, dir: Ix2s) -> bool {
     let coords = (0..).map(|k| origin + dir * k);
@@ -63,7 +63,7 @@ pub fn part1() -> usize {
 pub fn part2() -> usize {
     let hay = std::fs::read_to_string(INPUT).unwrap();
     let hay = table::read_rows_chars(&hay);
-    all_indexes(&hay)
+    table::all_indexes(&hay)
         .into_iter()
         .filter(|origin| is_x_mas(&hay, *origin))
         .count()
