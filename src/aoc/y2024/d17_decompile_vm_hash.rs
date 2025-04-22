@@ -186,6 +186,10 @@ fn find_a(suffix: u64, output: &[u64]) -> Option<u64> {
     if n == 0 {
         Some(suffix)
     } else {
+        // Search from the end, because that corresponds to the
+        // most significant bits of a, which we want to be lowest,
+        // and not have to pick higher bits because a preceding
+        // solution excluded the lower ones.
         let i = n - 1;
         let x = output[i];
         find_next_a(suffix, i, x)
