@@ -82,12 +82,15 @@ struct TrailVertex {
 fn get_trail_ratings(map: &Array2<i32>) -> Array2<TrailVertex> {
     // The paths form a directed acyclic graph (but not a tree, paths can merge)
 
-    // Number of paths from an arbitrary vertex is the sum of nbs of paths from its child vertexes,
-    // or 1 if it has no child vertices, i.e. it is the end
+    // Let vertex 'value' be the number of paths from it to a trailend.
+    // Vertex value of trailends is 1.
+    // Vertex value is the sum of values of its children (vertexes reachable from it).
+    // This is same as Dijkstra's algorithm, but using sum instead of min.
+    // But Dijkstra's is slower than the following implementation.
+    // The reason is that this implementation works only on acyclic graphs.
+    // It is equivalent to visiting nodes in topological order.
 
-    // Number of paths from a vertex is independent of where we start from,
-    // meaning it is the same for all trailheads.
-
+    // Vertex value is independent of starting point, meaning it is the same for all trailheads.
     // To find the trail rating:
     //      Assign end vertexes 1, and 0 to all others. Put end vertexes in the 'evaluated' set.
     //      For each evaluated vertex, add its value to its parents, and remove it from 'evaluated'
