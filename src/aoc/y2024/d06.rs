@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
-use crate::lgl::data::{index::Ix2s, table};
+use crate::lgl::data::{array2d, index::Ix2s, table};
+use ndarray::Array2;
 
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 struct Guard {
@@ -28,9 +29,9 @@ fn turn_right(dir: Ix2s) -> Ix2s {
     }
 }
 
-fn tick_guard(obstructions: &[Vec<bool>], g: &Guard) -> Option<Guard> {
+fn tick_guard(obstructions: &Array2<bool>, g: &Guard) -> Option<Guard> {
     let next_pos = g.pos + g.dir;
-    table::get(obstructions, next_pos).map(|obstructed| {
+    array2d::get(obstructions, next_pos).map(|obstructed| {
         if *obstructed {
             Guard {
                 pos: g.pos,
@@ -45,16 +46,17 @@ fn tick_guard(obstructions: &[Vec<bool>], g: &Guard) -> Option<Guard> {
     })
 }
 
-fn parse_input(input: &str) -> (Vec<Vec<bool>>, Guard) {
+fn parse_input(input: &str) -> (Array2<bool>, Guard) {
     let input = table::read_rows_chars(input);
-    let obstructions: Vec<Vec<bool>> = input
-        .iter()
-        .map(|l| l.iter().map(|c| *c == '#').collect())
-        .collect();
-    let guards: Vec<Guard> = table::all_indexes(&input)
-        .into_iter()
-        .filter_map(|pos| {
-            table::get(&input, pos).and_then(|c| parse_guard_dir(c).map(|dir| Guard { pos, dir }))
+    let input: Array2<char> = array2d::to_ndarray(&input);
+    let obstructions: Array2<bool> = input.map(|c| *c == '#');
+    let guards: Vec<Guard> = input
+        .indexed_iter()
+        .filter_map(|(pos, c)| {
+            parse_guard_dir(c).map(|dir| Guard {
+                pos: Ix2s::from_upair(pos),
+                dir,
+            })
         })
         .collect();
     let guard = guards[0];
@@ -62,7 +64,7 @@ fn parse_input(input: &str) -> (Vec<Vec<bool>>, Guard) {
 }
 
 /// Returns the path if it does not form a loop, and None otherwise.
-fn get_open_path(obstructions: &[Vec<bool>], mut g: Guard) -> Option<HashSet<Ix2s>> {
+fn get_open_path(obstructions: &Array2<bool>, mut g: Guard) -> Option<HashSet<Ix2s>> {
     let mut path: HashSet<Guard> = HashSet::new();
     loop {
         if path.insert(g) {
@@ -109,11 +111,11 @@ pub fn part2() -> usize {
     let mut nb_cycles = 0;
     for r in path.into_iter() {
         // Place new obstruction
-        *table::get_mut(&mut obstructions, r).unwrap() = true;
+        *array2d::get_mut(&mut obstructions, r).unwrap() = true;
         let is_cycle = get_open_path(&obstructions, guard).is_none();
         nb_cycles += is_cycle as usize;
         // Remove new obstruction
-        *table::get_mut(&mut obstructions, r).unwrap() = false;
+        *array2d::get_mut(&mut obstructions, r).unwrap() = false;
     }
     nb_cycles
 }
