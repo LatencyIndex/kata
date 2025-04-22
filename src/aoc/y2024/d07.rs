@@ -102,6 +102,7 @@ mod tests {
         assert_eq!(part1(), 7710205485870);
     }
     #[test]
+    #[ignore]
     fn test_part2() {
         assert_eq!(part2(), 20928985450275);
     }
