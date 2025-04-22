@@ -72,3 +72,9 @@ pub fn display_chars(arr: &Array2<char>) -> String {
         .collect();
     lines.join("\n")
 }
+
+pub fn find_position<T: PartialEq>(arr: &Array2<T>, needle: &T) -> Option<Ix2s> {
+    arr.indexed_iter()
+        .find(|(_pos, val)| *val == needle)
+        .map(|(pos, _val)| pos.try_into().unwrap())
+}

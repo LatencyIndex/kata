@@ -71,21 +71,15 @@ fn show_path(maze: &Array2<char>, path: &[Ix2s]) -> String {
     array2d::display_chars(&marked_maze)
 }
 
-fn find_position<T: PartialEq>(arr: &Array2<T>, needle: &T) -> Option<Ix2s> {
-    arr.indexed_iter()
-        .find(|(_pos, val)| *val == needle)
-        .map(|(pos, _val)| pos.try_into().unwrap())
-}
-
 fn find_start(maze: &Array2<char>) -> Coords {
     Coords {
-        pos: find_position(maze, &'S').unwrap(),
+        pos: array2d::find_position(maze, &'S').unwrap(),
         dir: Ix2s(0, 1), // Start facing east
     }
 }
 
 fn find_goals(maze: &Array2<char>) -> [Coords; 4] {
-    let pos = find_position(maze, &'E').unwrap();
+    let pos = array2d::find_position(maze, &'E').unwrap();
     CARDINAL_DIRS.map(|dir| Coords { pos, dir })
 }
 
