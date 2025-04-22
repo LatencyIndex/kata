@@ -54,7 +54,7 @@ fn parse_input(input: &str) -> (Array2<bool>, Guard) {
         .indexed_iter()
         .filter_map(|(pos, c)| {
             parse_guard_dir(c).map(|dir| Guard {
-                pos: Ix2s::from_upair(pos),
+                pos: pos.try_into().unwrap(),
                 dir,
             })
         })
