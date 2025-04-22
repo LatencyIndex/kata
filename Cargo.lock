@@ -388,6 +388,7 @@ dependencies = [
  "image",
  "ndarray",
  "petgraph",
+ "rand",
  "regex",
 ]
 
