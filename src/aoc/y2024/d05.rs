@@ -49,10 +49,6 @@ fn fails(successors: &Successors, xs: &[u32]) -> bool {
 
 const INPUT: &str = "data/y2024/d05/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d05::part1;
-/// assert_eq!(part1(), 5208);
-/// ```
 pub fn part1() -> u32 {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (successors, sequences) = parse_input(&input);
@@ -63,10 +59,6 @@ pub fn part1() -> u32 {
         .sum()
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d05::part2;
-/// assert_eq!(part2(), 6732);
-/// ```
 pub fn part2() -> u32 {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (successors, mut sequences) = parse_input(&input);
@@ -89,4 +81,17 @@ pub fn part2() -> u32 {
             seq[seq.len() / 2]
         })
         .sum()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 5208);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), 6732);
+    }
 }

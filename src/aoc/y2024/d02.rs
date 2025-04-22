@@ -37,20 +37,12 @@ fn is_tolerable(xs: &[i64]) -> bool {
 
 const INPUT: &str = "data/y2024/d02/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d02::part1;
-/// assert_eq!(part1(), 379);
-/// ```
 pub fn part1() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let table: Vec<Vec<i64>> = table::parse(table::read_rows_whitespace(&input));
     table.iter().filter(|xs| is_safe(xs)).count()
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d02::part2;
-/// assert_eq!(part2(), 430);
-/// ```
 pub fn part2() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let table: Vec<Vec<i64>> = table::parse(table::read_rows_whitespace(&input));
@@ -58,4 +50,17 @@ pub fn part2() -> usize {
         .iter()
         .filter(|xs| is_safe(xs) || is_tolerable(xs))
         .count()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 379);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), 430);
+    }
 }

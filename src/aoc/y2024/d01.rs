@@ -40,22 +40,27 @@ fn similarity(l: &[i64], r: Vec<i64>) -> i64 {
 
 const INPUT: &str = "data/y2024/d01/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d01::part1;
-/// assert_eq!(part1(), 1938424);
-/// ```
 pub fn part1() -> i64 {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (l, r) = read_two_cols(&input);
     distance(l, r)
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d01::part2;
-/// assert_eq!(part2(), 22014209);
-/// ```
 pub fn part2() -> i64 {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (l, r) = read_two_cols(&input);
     similarity(&l, r)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 1938424);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), 22014209);
+    }
 }

@@ -85,20 +85,12 @@ fn get_open_path(obstructions: &Array2<bool>, mut g: Guard) -> Option<HashSet<Ix
 
 const INPUT: &str = "data/y2024/d06/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d06::part1;
-/// assert_eq!(part1(), 4559);
-/// ```
 pub fn part1() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (obstructions, guard) = parse_input(&input);
     get_open_path(&obstructions, guard).unwrap().len()
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d06::part2;
-/// assert_eq!(part2(), 1604);
-/// ```
 pub fn part2() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
     let (mut obstructions, guard) = parse_input(&input);
@@ -118,4 +110,18 @@ pub fn part2() -> usize {
         *array2d::get_mut(&mut obstructions, r).unwrap() = false;
     }
     nb_cycles
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 4559);
+    }
+    #[test]
+    #[ignore]
+    fn test_part2() {
+        assert_eq!(part2(), 1604);
+    }
 }

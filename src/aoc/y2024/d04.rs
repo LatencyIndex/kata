@@ -46,20 +46,12 @@ fn is_x_mas(table: &[Vec<char>], center: Ix2s) -> bool {
 
 const INPUT: &str = "data/y2024/d04/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d04::part1;
-/// assert_eq!(part1(), 2543);
-/// ```
 pub fn part1() -> usize {
     let hay = std::fs::read_to_string(INPUT).unwrap();
     let needle: &str = "XMAS";
     count_word(needle, &hay)
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d04::part2;
-/// assert_eq!(part2(), 1930);
-/// ```
 pub fn part2() -> usize {
     let hay = std::fs::read_to_string(INPUT).unwrap();
     let hay = table::read_rows_chars(&hay);
@@ -67,4 +59,17 @@ pub fn part2() -> usize {
         .into_iter()
         .filter(|origin| is_x_mas(&hay, *origin))
         .count()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 2543);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), 1930);
+    }
 }

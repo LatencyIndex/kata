@@ -28,10 +28,6 @@ fn eval(cmds: impl Iterator<Item = Cmd>) -> i64 {
 
 const INPUT: &str = "data/y2024/d03/input";
 
-/// ```
-/// use advent_of_code::aoc::y2024::d03::part1;
-/// assert_eq!(part1(), 161085926);
-/// ```
 pub fn part1() -> i64 {
     let hay = std::fs::read_to_string(INPUT).unwrap();
     let re = Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)").unwrap();
@@ -40,10 +36,6 @@ pub fn part1() -> i64 {
         .sum()
 }
 
-/// ```
-/// use advent_of_code::aoc::y2024::d03::part2;
-/// assert_eq!(part2(), 82045421);
-/// ```
 pub fn part2() -> i64 {
     let hay = std::fs::read_to_string(INPUT).unwrap();
 
@@ -68,4 +60,17 @@ pub fn part2() -> i64 {
 
     let cmds = cmds.into_iter().map(|(_, cmd)| cmd);
     eval(cmds)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 161085926);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), 82045421);
+    }
 }
