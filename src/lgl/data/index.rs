@@ -1,7 +1,7 @@
 use std::ops::{Add, Mul, Sub};
 
 /// Signed 2D index
-#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Ix2s(pub isize, pub isize);
 
 impl Add for Ix2s {
