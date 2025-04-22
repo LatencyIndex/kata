@@ -1,29 +1,29 @@
 use std::collections::HashSet;
 
-use crate::lgl::data::table::{self, I2};
+use crate::lgl::data::table::{self, Ix2s};
 
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 struct Guard {
-    pos: I2,
-    dir: I2,
+    pos: Ix2s,
+    dir: Ix2s,
 }
 
-fn parse_guard_dir(c: &char) -> Option<I2> {
+fn parse_guard_dir(c: &char) -> Option<Ix2s> {
     match c {
-        '^' => Some(I2(-1, 0)),
-        '>' => Some(I2(0, 1)),
-        'v' => Some(I2(1, 0)),
-        '<' => Some(I2(0, -1)),
+        '^' => Some(Ix2s(-1, 0)),
+        '>' => Some(Ix2s(0, 1)),
+        'v' => Some(Ix2s(1, 0)),
+        '<' => Some(Ix2s(0, -1)),
         _ => None,
     }
 }
 
-fn turn_right(dir: I2) -> I2 {
+fn turn_right(dir: Ix2s) -> Ix2s {
     match dir {
-        I2(-1, 0) => I2(0, 1),
-        I2(0, 1) => I2(1, 0),
-        I2(1, 0) => I2(0, -1),
-        I2(0, -1) => I2(-1, 0),
+        Ix2s(-1, 0) => Ix2s(0, 1),
+        Ix2s(0, 1) => Ix2s(1, 0),
+        Ix2s(1, 0) => Ix2s(0, -1),
+        Ix2s(0, -1) => Ix2s(-1, 0),
         _ => panic!("invalid direction"),
     }
 }
@@ -62,7 +62,7 @@ fn parse_input(input: &str) -> (Vec<Vec<bool>>, Guard) {
 }
 
 /// Returns the path if it does not form a loop, and None otherwise.
-fn get_open_path(obstructions: &[Vec<bool>], mut g: Guard) -> Option<HashSet<I2>> {
+fn get_open_path(obstructions: &[Vec<bool>], mut g: Guard) -> Option<HashSet<Ix2s>> {
     let mut path: HashSet<Guard> = HashSet::new();
     loop {
         if path.insert(g) {

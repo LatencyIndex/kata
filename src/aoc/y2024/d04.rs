@@ -1,6 +1,6 @@
-use crate::lgl::data::table::{self, all_indexes, I2};
+use crate::lgl::data::table::{self, all_indexes, Ix2s};
 
-fn is_needle(needle: &str, table: &[Vec<char>], origin: I2, dir: I2) -> bool {
+fn is_needle(needle: &str, table: &[Vec<char>], origin: Ix2s, dir: Ix2s) -> bool {
     let coords = (0..).map(|k| origin + dir * k);
     let word = coords
         .map_while(|p| table::get(table, p).copied())
@@ -12,14 +12,14 @@ fn is_needle(needle: &str, table: &[Vec<char>], origin: I2, dir: I2) -> bool {
 /// Occurences can be vertical, horizontal, or diagonal, forwards and backwards.
 fn count_word(needle: &str, hay: &str) -> usize {
     let dirs = [
-        I2(0, 1),
-        I2(0, -1),
-        I2(1, 0),
-        I2(-1, 0),
-        I2(1, 1),
-        I2(1, -1),
-        I2(-1, 1),
-        I2(-1, -1),
+        Ix2s(0, 1),
+        Ix2s(0, -1),
+        Ix2s(1, 0),
+        Ix2s(-1, 0),
+        Ix2s(1, 1),
+        Ix2s(1, -1),
+        Ix2s(-1, 1),
+        Ix2s(-1, -1),
     ];
     let hay: Vec<Vec<char>> = table::read_rows_chars(hay);
     let mut hits = 0;
@@ -36,11 +36,11 @@ fn count_word(needle: &str, hay: &str) -> usize {
 /// M . S     S . S
 /// . A . or  . A .
 /// M . S     M . M
-fn is_x_mas(table: &[Vec<char>], center: I2) -> bool {
-    let down_right = is_needle("MAS", table, center + I2(-1, -1), I2(1, 1))
-        || is_needle("SAM", table, center + I2(-1, -1), I2(1, 1));
-    let up_right = is_needle("MAS", table, center + I2(1, -1), I2(-1, 1))
-        || is_needle("SAM", table, center + I2(1, -1), I2(-1, 1));
+fn is_x_mas(table: &[Vec<char>], center: Ix2s) -> bool {
+    let down_right = is_needle("MAS", table, center + Ix2s(-1, -1), Ix2s(1, 1))
+        || is_needle("SAM", table, center + Ix2s(-1, -1), Ix2s(1, 1));
+    let up_right = is_needle("MAS", table, center + Ix2s(1, -1), Ix2s(-1, 1))
+        || is_needle("SAM", table, center + Ix2s(1, -1), Ix2s(-1, 1));
     down_right && up_right
 }
 
