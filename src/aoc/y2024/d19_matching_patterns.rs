@@ -14,19 +14,6 @@ fn parse_input(input: &str) -> (Vec<&str>, Vec<&str>) {
     (available, requested)
 }
 
-/// All available must be non-empty.
-/// Too slow for real input, never returns.
-#[allow(unused)]
-fn is_possible(available: &[&str], requested: &str) -> bool {
-    if requested.is_empty() {
-        true
-    } else {
-        available
-            .iter()
-            .any(|a| requested.starts_with(a) && is_possible(available, &requested[a.len()..]))
-    }
-}
-
 /// Nb. different ways the requested string can be created by concatenating available strings.
 /// All available must be non-empty.
 fn ways_to_match(available: &[&str], requested: &str) -> usize {
