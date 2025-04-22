@@ -1,28 +1,6 @@
 use crate::lgl::data::{array2d, graph, index::Ix2s};
 use ndarray::Array2;
-use petgraph::{algo::dijkstra::dijkstra, graphmap::UnGraphMap};
-
-type MazeGraph = UnGraphMap<Ix2s, ()>;
-
-/// Tiles marked 'true' are traversible, 'false' are not.
-/// Tiles connect only in cardinal directions, not diagonally.
-fn to_maze_graph(maze: &Array2<bool>) -> MazeGraph {
-    let is_accessible = |p: Ix2s| -> bool { array2d::get(maze, p).copied().unwrap_or(false) };
-    // Adjacent accessible tiles in the positive directions.
-    // Because the graph is undirected, the negative directions will be
-    // added by the other tile, avoiding duplicates.
-    let pos_edges = |src: Ix2s| -> Vec<(Ix2s, Ix2s)> {
-        let dsts = [src + Ix2s(0, 1), src + Ix2s(1, 0)];
-        std::iter::repeat(src)
-            .zip(dsts)
-            .filter(|(src, dst)| is_accessible(*src) && is_accessible(*dst))
-            .collect()
-    };
-    let edges = maze
-        .indexed_iter()
-        .flat_map(|(pos, _val)| pos_edges(pos.try_into().unwrap()));
-    MazeGraph::from_edges(edges)
-}
+use petgraph::algo::dijkstra::dijkstra;
 
 #[allow(unused)]
 fn show_maze(maze: &Array2<bool>) -> Array2<char> {
@@ -73,7 +51,7 @@ pub fn part1() -> usize {
     for b in falling.into_iter().take(1024) {
         *array2d::get_mut(&mut maze, b).unwrap() = false;
     }
-    let maze_graph = to_maze_graph(&maze);
+    let maze_graph = graph::from_maze_grid(&maze);
     let costs = dijkstra(&maze_graph, start, Some(goal), |_| 1);
     let path = graph::shortest_path(&maze_graph, &costs, goal);
     // To get nb. of steps, subtract 1 because start position,
@@ -93,7 +71,7 @@ pub fn part2() -> String {
         for b in falling.iter().take(i) {
             *array2d::get_mut(&mut maze, *b).unwrap() = false;
         }
-        let maze_graph = to_maze_graph(&maze);
+        let maze_graph = graph::from_maze_grid(&maze);
         let costs = dijkstra(&maze_graph, start, Some(goal), |_| 1);
         !costs.contains_key(&goal)
     };

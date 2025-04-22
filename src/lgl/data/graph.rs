@@ -1,4 +1,7 @@
+use crate::lgl::data::{array2d, index::Ix2s};
+use ndarray::Array2;
 use petgraph::{
+    graphmap::UnGraphMap,
     visit::{GraphBase, IntoNeighborsDirected},
     Direction::Incoming,
 };
@@ -42,4 +45,24 @@ where
         // Goal is unreachable
         Vec::new()
     }
+}
+
+/// Tiles marked 'true' are traversible, 'false' are not.
+/// Tiles connect only in cardinal directions, not diagonally.
+pub fn from_maze_grid(maze_grid: &Array2<bool>) -> UnGraphMap<Ix2s, ()> {
+    let is_accessible = |p: Ix2s| -> bool { array2d::get(maze_grid, p).copied().unwrap_or(false) };
+    // Adjacent accessible tiles in the positive directions.
+    // Because the graph is undirected, the negative directions will be
+    // added by the other tile, avoiding duplicates.
+    let pos_edges = |src: Ix2s| -> Vec<(Ix2s, Ix2s)> {
+        let dsts = [src + Ix2s(0, 1), src + Ix2s(1, 0)];
+        std::iter::repeat(src)
+            .zip(dsts)
+            .filter(|(src, dst)| is_accessible(*src) && is_accessible(*dst))
+            .collect()
+    };
+    let edges = maze_grid
+        .indexed_iter()
+        .flat_map(|(pos, _val)| pos_edges(pos.try_into().unwrap()));
+    UnGraphMap::from_edges(edges)
 }
