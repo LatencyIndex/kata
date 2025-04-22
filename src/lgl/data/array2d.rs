@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display};
 
-use crate::lgl::data::index::Ix2s;
+use crate::lgl::data::{index::Ix2s, table};
 pub use ndarray::{Array2, Ix2};
 
 /// Construct a 2D array from a rectangular table
@@ -11,6 +11,11 @@ pub fn to_ndarray<T: Clone>(table: &[Vec<T>]) -> Array2<T> {
     assert!(table.iter().all(|v| v.len() == m));
     let flat_table: Vec<T> = table.iter().flat_map(Clone::clone).collect();
     Array2::from_shape_vec((n, m), flat_table).unwrap()
+}
+
+/// Construct a 2D array from a rectangular table of characters
+pub fn from_chars(s: &str) -> Array2<char> {
+    to_ndarray(&table::read_rows_chars(s))
 }
 
 pub fn contains<T>(arr: &Array2<T>, pos: Ix2s) -> bool {
