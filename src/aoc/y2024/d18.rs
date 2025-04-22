@@ -1,7 +1,6 @@
-use crate::lgl::data::{array2d, index::Ix2s, table};
+use crate::lgl::data::{array2d, graph, index::Ix2s, table};
 use ndarray::Array2;
-use petgraph::{algo::dijkstra::dijkstra, graphmap::UnGraphMap, Direction::Incoming};
-use std::collections::HashMap;
+use petgraph::{algo::dijkstra::dijkstra, graphmap::UnGraphMap};
 
 type MazeGraph = UnGraphMap<Ix2s, ()>;
 
@@ -28,28 +27,6 @@ fn to_maze_graph(maze: &Array2<bool>) -> MazeGraph {
 #[allow(unused)]
 fn show_maze(maze: &Array2<bool>) -> Array2<char> {
     maze.map(|&v| if v { '.' } else { '#' })
-}
-
-fn shortest_path(
-    maze: &MazeGraph,
-    costs: &HashMap<Ix2s, i32>,
-    start: Ix2s,
-    goal: Ix2s,
-) -> Vec<Ix2s> {
-    let mut path = vec![goal];
-    while *path.last().unwrap() != start {
-        let adjacents = maze.neighbors_directed(*path.last().unwrap(), Incoming);
-        let cheapest = adjacents
-            .filter_map(|pos| costs.get(&pos).map(|cost| (pos, cost)))
-            .min_by_key(|(_pos, cost)| *cost);
-        if let Some((pos, _cost)) = cheapest {
-            path.push(pos);
-        } else {
-            break;
-        }
-    }
-    path.reverse();
-    path
 }
 
 // Find largest i on [lo, hi) interval for which p(i) == false.
@@ -92,8 +69,8 @@ pub fn part1() -> usize {
         *array2d::get_mut(&mut maze, b).unwrap() = false;
     }
     let maze_graph = to_maze_graph(&maze);
-    let costs = dijkstra(&maze_graph, start, None, |_| 1);
-    let path = shortest_path(&maze_graph, &costs, start, goal);
+    let costs = dijkstra(&maze_graph, start, Some(goal), |_| 1);
+    let path = graph::shortest_path(&maze_graph, &costs, goal);
     // To get nb. of steps, subtract 1 because start position,
     // included in the path, takes 0 steps.
     path.len() - 1
