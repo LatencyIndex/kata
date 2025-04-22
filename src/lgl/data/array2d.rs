@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use crate::lgl::data::index::Ix2s;
 pub use ndarray::{Array2, Ix2};
 
@@ -29,4 +31,16 @@ pub fn get<T>(arr: &Array2<T>, index: Ix2s) -> Option<&T> {
 pub fn get_mut<T>(arr: &mut Array2<T>, index: Ix2s) -> Option<&mut T> {
     let index: Ix2 = index.try_into().ok()?;
     arr.get_mut(index)
+}
+
+pub fn compact_display<T: Debug>(arr: &Array2<T>, sep: &str) -> String {
+    let lines: Vec<String> = arr
+        .rows()
+        .into_iter()
+        .map(|row| {
+            let strings: Vec<String> = row.iter().map(|x| format!("{x:?}")).collect();
+            strings.join(sep)
+        })
+        .collect();
+    lines.join("\n")
 }
