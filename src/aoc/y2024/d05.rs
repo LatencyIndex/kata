@@ -11,7 +11,7 @@ fn parse_input(input: &str) -> (Successors, Vec<Vec<u32>>) {
     let mut inputs = input.split("\n\n");
 
     let precedences = inputs.next().unwrap();
-    let precedences = table::to_table(precedences, '|');
+    let precedences = table::to_table(precedences, "|");
     let precedences: Vec<Vec<u32>> = table::parse_table(precedences);
 
     let mut successors: Successors = HashMap::new();
@@ -27,7 +27,7 @@ fn parse_input(input: &str) -> (Successors, Vec<Vec<u32>>) {
     }
 
     let sequences = inputs.next().unwrap();
-    let sequences = table::to_table(sequences, ',');
+    let sequences = table::to_table(sequences, ",");
     let sequences: Vec<Vec<u32>> = table::parse_table(sequences);
 
     (successors, sequences)

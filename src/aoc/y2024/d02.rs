@@ -42,7 +42,8 @@ const INPUT: &str = "data/y2024/d02/input";
 /// assert_eq!(part1(), 379);
 /// ```
 pub fn part1() -> usize {
-    table::read_rows(INPUT)
+    let input = std::fs::read_to_string(INPUT).unwrap();
+    table::parse_rows(&input)
         .iter()
         .filter(|xs| is_safe(xs))
         .count()
@@ -53,7 +54,8 @@ pub fn part1() -> usize {
 /// assert_eq!(part2(), 430);
 /// ```
 pub fn part2() -> usize {
-    table::read_rows(INPUT)
+    let input = std::fs::read_to_string(INPUT).unwrap();
+    table::parse_rows(&input)
         .iter()
         .filter(|xs| is_safe(xs) || is_tolerable(xs))
         .count()

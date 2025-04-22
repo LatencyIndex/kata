@@ -1,4 +1,4 @@
-use std::{fmt::Debug, fs, path::Path, str::FromStr};
+use std::{fmt::Debug, str::FromStr};
 
 /// Read whitespace-separated cells into a table.
 pub fn to_table_whitespace(s: &str) -> Vec<Vec<&str>> {
@@ -9,7 +9,7 @@ pub fn to_char_table(s: &str) -> Vec<Vec<char>> {
     s.lines().map(|l| l.chars().collect()).collect()
 }
 
-pub fn to_table(s: &str, sep: char) -> Vec<Vec<&str>> {
+pub fn to_table<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
     s.lines().map(|l| l.split(sep).collect()).collect()
 }
 
@@ -59,20 +59,4 @@ where
         .iter()
         .map(|col| col.iter().map(|x| x.parse().unwrap()).collect())
         .collect()
-}
-
-pub fn read_rows<T>(input_file: impl AsRef<Path>) -> Vec<Vec<T>>
-where
-    T: FromStr,
-    <T as FromStr>::Err: Debug,
-{
-    parse_rows(&fs::read_to_string(input_file).unwrap())
-}
-
-pub fn read_cols<T>(input_file: impl AsRef<Path>) -> Vec<Vec<T>>
-where
-    T: FromStr,
-    <T as FromStr>::Err: Debug,
-{
-    transpose(parse_rows(&fs::read_to_string(input_file).unwrap()))
 }

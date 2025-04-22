@@ -1,10 +1,10 @@
-use std::{collections::HashMap, hash::Hash, path::Path};
+use std::{collections::HashMap, hash::Hash};
 
 use crate::lgl::data::table;
 
 // Read text file as two columns of integers
-fn read_two_cols(input: impl AsRef<Path>) -> (Vec<i64>, Vec<i64>) {
-    let mut cols: Vec<Vec<i64>> = table::read_cols(input);
+fn read_two_cols(input: &str) -> (Vec<i64>, Vec<i64>) {
+    let mut cols: Vec<Vec<i64>> = table::parse_cols(input);
     let r = cols.pop().unwrap();
     let l = cols.pop().unwrap();
     (l, r)
@@ -44,7 +44,8 @@ const INPUT: &str = "data/y2024/d01/input";
 /// assert_eq!(part1(), 1938424);
 /// ```
 pub fn part1() -> i64 {
-    let (l, r) = read_two_cols(INPUT);
+    let input = std::fs::read_to_string(INPUT).unwrap();
+    let (l, r) = read_two_cols(&input);
     distance(l, r)
 }
 
@@ -53,6 +54,7 @@ pub fn part1() -> i64 {
 /// assert_eq!(part2(), 22014209);
 /// ```
 pub fn part2() -> i64 {
-    let (l, r) = read_two_cols(INPUT);
+    let input = std::fs::read_to_string(INPUT).unwrap();
+    let (l, r) = read_two_cols(&input);
     similarity(&l, r)
 }
