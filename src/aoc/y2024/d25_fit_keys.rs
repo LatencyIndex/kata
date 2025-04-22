@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/25
+
 use crate::lgl::data::array2d;
 
 type Pins = Vec<usize>;

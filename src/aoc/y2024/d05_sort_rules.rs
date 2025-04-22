@@ -1,9 +1,10 @@
+// Puzzle description: https://adventofcode.com/2024/day/5
+
+use crate::lgl::data::table;
 use std::{
     cmp::Ordering,
     collections::{HashMap, HashSet},
 };
-
-use crate::lgl::data::table;
 
 type Successors = HashMap<u32, HashSet<u32>>;
 

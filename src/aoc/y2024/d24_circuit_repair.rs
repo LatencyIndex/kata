@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/24
+
 use crate::lgl::data::hashmap;
 use petgraph::{
     algo::toposort,

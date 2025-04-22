@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/23
+
 use std::collections::{BTreeMap, BTreeSet};
 
 type Network<'a> = BTreeMap<&'a str, BTreeSet<&'a str>>;

@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/21
+
 use crate::lgl::data::{hashmap, index::Ix2s};
 use petgraph::{algo::dijkstra, graphmap::DiGraphMap};
 use std::collections::HashMap;

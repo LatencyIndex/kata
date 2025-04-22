@@ -1,10 +1,11 @@
-use std::{collections::HashSet, fmt::Debug};
+// Puzzle description: https://adventofcode.com/2024/day/12
 
 use crate::lgl::data::{
     array2d::{self, Array2},
     index::Ix2s,
     table,
 };
+use std::{collections::HashSet, fmt::Debug};
 
 enum Pixel {
     // Unprocessed pixels

@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/9
+
 use std::collections::{BTreeMap, BTreeSet};
 
 fn is_file(sector_id: usize) -> bool {

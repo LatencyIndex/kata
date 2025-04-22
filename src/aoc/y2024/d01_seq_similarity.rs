@@ -1,6 +1,7 @@
-use std::{collections::HashMap, hash::Hash};
+// Puzzle description: https://adventofcode.com/2024/day/1
 
 use crate::lgl::data::table;
+use std::{collections::HashMap, hash::Hash};
 
 // Read text file as two columns of integers
 fn read_two_cols(input: &str) -> (Vec<i64>, Vec<i64>) {

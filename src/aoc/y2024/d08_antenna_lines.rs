@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/8
+
 use crate::lgl::data::{array2d, index::Ix2s, table};
 use ndarray::Array2;
 use std::collections::{HashMap, HashSet};

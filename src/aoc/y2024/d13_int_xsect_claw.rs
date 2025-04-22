@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/13
+
 use regex::Regex;
 use std::ops::{Add, Div, Mul, Sub};
 

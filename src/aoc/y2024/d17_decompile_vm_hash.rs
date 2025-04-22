@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/17
+
 #[derive(Debug, Clone)]
 struct Computer {
     a: u64,

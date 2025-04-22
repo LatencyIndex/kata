@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/22
+
 use std::collections::HashMap;
 
 fn next_secret(mut i: i64) -> i64 {

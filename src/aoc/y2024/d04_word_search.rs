@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/4
+
 use crate::lgl::data::{index::Ix2s, table};
 
 fn is_needle(needle: &str, table: &[Vec<char>], origin: Ix2s, dir: Ix2s) -> bool {

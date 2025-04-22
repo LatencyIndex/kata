@@ -1,7 +1,8 @@
-use std::collections::HashSet;
+// Puzzle description: https://adventofcode.com/2024/day/6
 
 use crate::lgl::data::{array2d, index::Ix2s, table};
 use ndarray::Array2;
+use std::collections::HashSet;
 
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 struct Guard {

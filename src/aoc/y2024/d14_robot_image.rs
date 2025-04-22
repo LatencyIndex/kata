@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/14
+
 use crate::lgl::data::index::Ix2s;
 use image::{GrayImage, Luma};
 use regex::Regex;

@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/7
+
 fn parse_line(line: &str) -> (u64, Vec<u64>) {
     let mut it = line.split(":");
     let result: u64 = it.next().unwrap().parse().unwrap();

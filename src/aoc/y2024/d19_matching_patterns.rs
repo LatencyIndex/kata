@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/19
+
 /// Returns (available, requested) towel patterns, excluding whitespace or empty patterns.
 fn parse_input(input: &str) -> (Vec<&str>, Vec<&str>) {
     let (available, requested) = input.split_once("\n\n").unwrap();

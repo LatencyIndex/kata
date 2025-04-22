@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/18
+
 use crate::lgl::data::{array2d, graph, index::Ix2s};
 use ndarray::Array2;
 use petgraph::algo::dijkstra::dijkstra;

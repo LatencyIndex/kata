@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/11
+
 use std::collections::HashMap;
 
 fn parse_stones(input: &str) -> Vec<u64> {

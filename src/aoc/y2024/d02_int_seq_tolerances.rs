@@ -1,6 +1,7 @@
-use std::ops::Sub;
+// Puzzle description: https://adventofcode.com/2024/day/2
 
 use crate::lgl::data::table;
+use std::ops::Sub;
 
 fn diff<T: Copy + Sub<Output = T>>(v: &[T]) -> Vec<T> {
     v.windows(2).map(|x| x[1] - x[0]).collect()

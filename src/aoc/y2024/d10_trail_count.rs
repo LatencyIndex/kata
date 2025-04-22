@@ -1,3 +1,5 @@
+// Puzzle description: https://adventofcode.com/2024/day/10
+
 use crate::lgl::data::{
     array2d::{self, Array2, Ix2},
     index::Ix2s,
