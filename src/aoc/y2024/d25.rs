@@ -41,20 +41,11 @@ pub fn part1() -> usize {
         .sum()
 }
 
-pub fn part2() -> usize {
-    // let input = std::fs::read_to_string(INPUT).unwrap();
-    2
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test_part1() {
         assert_eq!(part1(), 3136);
-    }
-    #[test]
-    fn test_part2() {
-        assert_eq!(part2(), 2);
     }
 }
