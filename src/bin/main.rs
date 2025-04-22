@@ -1,5 +1,5 @@
-use advent_of_code::aoc::y2024::d03;
+use kata::aoc;
 
 fn main() {
-    dbg!(d03::part2());
+    dbg!(aoc::y2024::d07::part1());
 }
