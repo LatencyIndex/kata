@@ -132,7 +132,9 @@ fn get_slave_matrix(slave_keypad: &Keypad, master_matrix: &CostMatrix) -> CostMa
             HashMap::from_iter(
                 slave_keypad
                     .values()
-                    // If src == dst, dijkstra yields 0 cost, but.. TODO
+                    // If src == dst, dijkstra yields 0 cost, but it still takes 1 click to press the button.
+                    // Cost matrix state/position 'A' means "just having clicked A".
+                    // Therefore this is already the cost to click the button, not just to reach it.
                     .map(|&slave_dst| (slave_dst, costs[&(slave_dst, 'A')].max(1))),
             ),
         )
@@ -144,11 +146,7 @@ fn get_cost(cost_matrix: &CostMatrix, buttons: &str) -> i64 {
     // Start every sequence over the 'A' button.
     let prev_buttons = std::iter::once('A').chain(buttons.chars());
     for (src, dst) in prev_buttons.zip(buttons.chars()) {
-        // Cost matrix only yields the cost to reach a button.
-        // To click it, it costs 1 more.
-        // TODO: Am I considering this +1 everywhere I need to?
-        // But using 0 instead of 1 yields correct result...
-        cost += cost_matrix[&src][&dst] + 0;
+        cost += cost_matrix[&src][&dst];
     }
     cost
 }
