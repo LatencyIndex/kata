@@ -1,4 +1,4 @@
-use crate::lgl::data::{array2d, graph, index::Ix2s, table};
+use crate::lgl::data::{array2d, graph, index::Ix2s};
 use ndarray::Array2;
 use petgraph::{algo::dijkstra::dijkstra, graphmap::UnGraphMap};
 
@@ -49,18 +49,23 @@ where
     lo
 }
 
+// Read rows of X,Y integers.
+fn parse_input(input: &str) -> Vec<Ix2s> {
+    input
+        .lines()
+        .map(|line| {
+            let (x, y) = line.split_once(",").unwrap();
+            // Ix2s uses Y,X coords, but input is in X,Y
+            Ix2s(y.parse().unwrap(), x.parse().unwrap())
+        })
+        .collect()
+}
+
 const INPUT: &str = "data/y2024/d18/input";
 
 pub fn part1() -> usize {
-    let falling = std::fs::read_to_string(INPUT).unwrap();
-    let falling: Array2<isize> =
-        array2d::to_ndarray(&table::read_rows(&falling, ",")).map(|x| x.parse().unwrap());
-    let falling: Vec<Ix2s> = falling
-        .rows()
-        .into_iter()
-        // Ix2 & Ix2s use Y,X coords, but input is in X,Y
-        .map(|row| Ix2s(row[1], row[0]))
-        .collect();
+    let input = std::fs::read_to_string(INPUT).unwrap();
+    let falling = parse_input(&input);
     let shape = (71, 71);
     let start = Ix2s(0, 0);
     let goal = Ix2s(70, 70);
@@ -78,14 +83,7 @@ pub fn part1() -> usize {
 
 pub fn part2() -> String {
     let input = std::fs::read_to_string(INPUT).unwrap();
-    let input: Array2<isize> =
-        array2d::to_ndarray(&table::read_rows(&input, ",")).map(|x| x.parse().unwrap());
-    let falling: Vec<Ix2s> = input
-        .rows()
-        .into_iter()
-        // Ix2 & Ix2s use Y,X coords, but input is in X,Y
-        .map(|row| Ix2s(row[1], row[0]))
-        .collect();
+    let falling = parse_input(&input);
     let shape = (71, 71);
     let start = Ix2s(0, 0);
     let goal = Ix2s(70, 70);
