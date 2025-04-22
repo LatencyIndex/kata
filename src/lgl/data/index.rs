@@ -4,6 +4,12 @@ use std::ops::{Add, Mul};
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub struct Ix2s(pub isize, pub isize);
 
+impl Ix2s {
+    pub fn from_upair((i, j): (usize, usize)) -> Ix2s {
+        Ix2s(i.try_into().unwrap(), j.try_into().unwrap())
+    }
+}
+
 impl Add for Ix2s {
     type Output = Ix2s;
     fn add(self, rhs: Self) -> Self::Output {
