@@ -2,11 +2,6 @@ use crate::lgl::data::{array2d, graph, index::Ix2s};
 use ndarray::Array2;
 use petgraph::algo::dijkstra::dijkstra;
 
-#[allow(unused)]
-fn show_maze(maze: &Array2<bool>) -> Array2<char> {
-    maze.map(|&v| if v { '.' } else { '#' })
-}
-
 // Find largest i on [lo, hi) interval for which p(i) == false.
 // Assumes that p monotonically increases under the false < true ordering,
 // and that p(lo) == false and p(hi) == true.
