@@ -4,7 +4,8 @@ use crate::lgl::data::table;
 
 // Read text file as two columns of integers
 fn read_two_cols(input: &str) -> (Vec<i64>, Vec<i64>) {
-    let mut cols: Vec<Vec<i64>> = table::parse_cols(input);
+    let rows: Vec<Vec<i64>> = table::parse(table::read_rows_whitespace(input));
+    let mut cols = table::transpose(rows);
     let r = cols.pop().unwrap();
     let l = cols.pop().unwrap();
     (l, r)

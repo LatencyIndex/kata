@@ -43,10 +43,8 @@ const INPUT: &str = "data/y2024/d02/input";
 /// ```
 pub fn part1() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
-    table::parse_rows(&input)
-        .iter()
-        .filter(|xs| is_safe(xs))
-        .count()
+    let table: Vec<Vec<i64>> = table::parse(table::read_rows_whitespace(&input));
+    table.iter().filter(|xs| is_safe(xs)).count()
 }
 
 /// ```
@@ -55,7 +53,8 @@ pub fn part1() -> usize {
 /// ```
 pub fn part2() -> usize {
     let input = std::fs::read_to_string(INPUT).unwrap();
-    table::parse_rows(&input)
+    let table: Vec<Vec<i64>> = table::parse(table::read_rows_whitespace(&input));
+    table
         .iter()
         .filter(|xs| is_safe(xs) || is_tolerable(xs))
         .count()

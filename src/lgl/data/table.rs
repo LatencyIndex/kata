@@ -33,31 +33,12 @@ pub fn transpose<T>(m: Vec<Vec<T>>) -> Vec<Vec<T>> {
     t
 }
 
-pub fn parse_rows<T>(input: &str) -> Vec<Vec<T>>
+pub fn parse<T>(table: Vec<Vec<&str>>) -> Vec<Vec<T>>
 where
     T: FromStr,
     <T as FromStr>::Err: Debug,
 {
-    read_rows_whitespace(input)
-        .iter()
-        .map(|col| col.iter().map(|x| x.parse().unwrap()).collect())
-        .collect()
-}
-
-pub fn parse_cols<T>(input: &str) -> Vec<Vec<T>>
-where
-    T: FromStr,
-    <T as FromStr>::Err: Debug,
-{
-    transpose(parse_rows(input))
-}
-
-pub fn parse_table<T>(input: Vec<Vec<&str>>) -> Vec<Vec<T>>
-where
-    T: FromStr,
-    <T as FromStr>::Err: Debug,
-{
-    input
+    table
         .iter()
         .map(|col| col.iter().map(|x| x.parse().unwrap()).collect())
         .collect()
