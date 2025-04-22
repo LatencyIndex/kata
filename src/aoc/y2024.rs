@@ -22,4 +22,4 @@ pub mod d21_recursive_robots;
 pub mod d22_price_changes;
 pub mod d23_graph_cliques;
 pub mod d24_circuit_repair;
-pub mod d25;
+pub mod d25_fit_keys;
