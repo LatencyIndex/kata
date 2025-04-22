@@ -1,7 +1,7 @@
 use crate::lgl::data::{array2d, index::Ix2s};
 use ndarray::Array2;
-use petgraph::{algo::dijkstra::dijkstra, graphmap::DiGraphMap, Direction::Incoming};
-use std::collections::{HashMap, HashSet};
+use petgraph::{algo::dijkstra::dijkstra, graphmap::DiGraphMap};
+use std::collections::HashSet;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord, Debug)]
 struct Coords {
@@ -55,30 +55,6 @@ fn get_maze_graph(maze: &Array2<char>) -> MazeGraph {
     let turn_edges = get_empty_tiles(maze).flat_map(get_turns);
     let edges = straight_edges.chain(turn_edges);
     MazeGraph::from_edges(edges)
-}
-
-/// Warning: Can fail if there are edges with 0 cost.
-#[allow(unused)]
-fn shortest_path(
-    maze: &MazeGraph,
-    costs: &HashMap<Coords, i32>,
-    start: Coords,
-    goal: Coords,
-) -> Vec<Coords> {
-    let mut path = vec![goal];
-    while *path.last().unwrap() != start {
-        let adjacents = maze.neighbors_directed(*path.last().unwrap(), Incoming);
-        let cheapest = adjacents
-            .filter_map(|pos| costs.get(&pos).map(|cost| (pos, cost)))
-            .min_by_key(|(_pos, cost)| *cost);
-        if let Some((pos, _cost)) = cheapest {
-            path.push(pos);
-        } else {
-            break;
-        }
-    }
-    path.reverse();
-    path
 }
 
 #[allow(unused)]
