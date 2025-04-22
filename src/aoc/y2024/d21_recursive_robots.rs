@@ -62,10 +62,11 @@ fn eval_cmd(keypad: &Keypad, arm: char, cmd: char) -> Option<char> {
 
 // Let slave arm be on button 'src', having just clicked it.
 // Cost to click 'dst' depends only on 'src', because master starts and ends hovering over 'A'
-// However, as the arm moves, the cost of each edge depends on the state of its master,
-// because the arm did not click, therefore master will not always be in the same state.
+// However, as the arm moves, the cost of each edge (in the graph of robot arm states)
+// depends on the state of its master, because the arm did not click,
+// therefore master will not always be in the same state.
 
-// Map of costmatrix[src][dst] is cost to click dst key if starting from src key.
+// costmatrix[src][dst] is cost to click dst key if starting from src key.
 type CostMatrix = HashMap<char, HashMap<char, i64>>;
 // Cost to click any key on master arrowpad, regardless of starting point, is 1.
 fn get_master_matrix(keypad: &Keypad) -> CostMatrix {
@@ -142,56 +143,56 @@ fn get_slave_matrix(slave_keypad: &Keypad, master_matrix: &CostMatrix) -> CostMa
 }
 
 fn get_cost(cost_matrix: &CostMatrix, buttons: &str) -> i64 {
-    let mut cost = 0;
     // Start every sequence over the 'A' button.
     let prev_buttons = std::iter::once('A').chain(buttons.chars());
-    for (src, dst) in prev_buttons.zip(buttons.chars()) {
-        cost += cost_matrix[&src][&dst];
-    }
-    cost
+    prev_buttons
+        .zip(buttons.chars())
+        .map(|(src, dst)| cost_matrix[&src][&dst])
+        .sum()
 }
 
-fn get_num(code: &str) -> i64 {
+// Parse the numeric prefix
+fn get_numeric_prefix(code: &str) -> i64 {
     let n: String = code.chars().take_while(|c| c.is_ascii_digit()).collect();
     n.parse().unwrap()
+}
+
+fn get_complexity(cost_matrix: &CostMatrix, code: &str) -> i64 {
+    get_numeric_prefix(code) * get_cost(cost_matrix, code)
+}
+
+// keypad[i] controls the robot at keypad[i+1]
+fn get_cost_matrix(keypads: &[Keypad]) -> CostMatrix {
+    let master = get_master_matrix(&keypads[0]);
+    keypads[1..]
+        .iter()
+        .fold(master, |matrix, kpad| get_slave_matrix(kpad, &matrix))
+}
+
+fn get_kpad_stack(nb_arrowpads: usize) -> Vec<Keypad> {
+    std::iter::repeat_n(get_arrowpad(), nb_arrowpads)
+        .chain(std::iter::once(get_numpad()))
+        .collect()
 }
 
 const INPUT: &str = "data/y2024/d21/input";
 
 pub fn part1() -> i64 {
     let codes = std::fs::read_to_string(INPUT).unwrap();
-    let nb_robot_arrowpads = 2;
-    let mut cost_matrix = get_master_matrix(&get_arrowpad());
-    for _ in 0..nb_robot_arrowpads {
-        cost_matrix = get_slave_matrix(&get_arrowpad(), &cost_matrix);
-    }
-    cost_matrix = get_slave_matrix(&get_numpad(), &cost_matrix);
-
-    let mut complexity = 0;
-    for code in codes.lines() {
-        let cost = get_cost(&cost_matrix, code);
-        let num = get_num(code);
-        complexity += cost * num;
-    }
-    complexity
+    let cost_matrix = get_cost_matrix(&get_kpad_stack(3));
+    codes
+        .lines()
+        .map(|code| get_complexity(&cost_matrix, code))
+        .sum()
 }
 
 pub fn part2() -> i64 {
     let codes = std::fs::read_to_string(INPUT).unwrap();
-    let nb_robot_arrowpads = 25;
-    let mut cost_matrix = get_master_matrix(&get_arrowpad());
-    for _ in 0..nb_robot_arrowpads {
-        cost_matrix = get_slave_matrix(&get_arrowpad(), &cost_matrix);
-    }
-    cost_matrix = get_slave_matrix(&get_numpad(), &cost_matrix);
-
-    let mut complexity = 0;
-    for code in codes.lines() {
-        let cost = get_cost(&cost_matrix, code);
-        let num = get_num(code);
-        complexity += cost * num;
-    }
-    complexity
+    let cost_matrix = get_cost_matrix(&get_kpad_stack(26));
+    codes
+        .lines()
+        .map(|code| get_complexity(&cost_matrix, code))
+        .sum()
 }
 
 #[cfg(test)]
