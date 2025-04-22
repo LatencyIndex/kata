@@ -2,8 +2,6 @@ use std::collections::HashSet;
 
 use crate::lgl::data::table::{self, I2};
 
-const INPUT: &str = "data/y2024/d06/input";
-
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 struct Guard {
     pos: I2,
@@ -82,6 +80,8 @@ fn get_open_path(obstructions: &[Vec<bool>], mut g: Guard) -> Option<HashSet<I2>
         }
     }
 }
+
+const INPUT: &str = "data/y2024/d06/input";
 
 /// ```
 /// use advent_of_code::aoc::y2024::d06::part1;
