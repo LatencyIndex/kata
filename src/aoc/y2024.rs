@@ -19,3 +19,4 @@ pub mod d18_falling_block_maze;
 pub mod d19_matching_patterns;
 pub mod d20_cheat_maze;
 pub mod d21_recursive_robots;
+pub mod d22_price_changes;
