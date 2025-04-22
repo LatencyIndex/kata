@@ -210,7 +210,7 @@ impl Display for Warehouse {
             }
         }
         *array2d::get_mut(&mut arr, self.robot).unwrap() = '@';
-        write!(f, "{}", array2d::display_chars(&arr))
+        write!(f, "{}", array2d::display(&arr, ""))
     }
 }
 

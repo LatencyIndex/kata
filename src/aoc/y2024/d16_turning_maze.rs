@@ -68,7 +68,7 @@ fn show_path(maze: &Array2<char>, path: &[Ix2s]) -> String {
     for x in path {
         *array2d::get_mut(&mut marked_maze, *x).unwrap() = '.';
     }
-    array2d::display_chars(&marked_maze)
+    array2d::display(&marked_maze, "")
 }
 
 fn find_start(maze: &Array2<char>) -> Coords {
