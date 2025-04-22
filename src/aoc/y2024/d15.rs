@@ -143,21 +143,19 @@ impl Warehouse {
     }
     fn move_robot(&mut self, dir: Ix2s) {
         let robot_next = self.robot + dir;
-        // Items that have not yet been pushed.
-        let mut not_pushed: Vec<Item> = Vec::new();
-        // Items that have been pushed, but items they hit have not yet been found.
-        let mut newly_pushed: Vec<Item> = Vec::new();
+
+        // Initialize pushed vecs with items directly pushed by the robot
+        let pushed_by_robot = |x: &&Item| -> bool { x.shape.contains(&robot_next) };
+        let (
+            // Items that have been pushed, but items they hit have not yet been found.
+            mut newly_pushed,
+            // Items that have not yet been pushed.
+            mut not_pushed,
+        ): (Vec<Item>, Vec<Item>) = self.items.iter().partition(pushed_by_robot);
+        newly_pushed = newly_pushed.into_iter().map(|x| x.moved(dir)).collect();
         // Items that have been pushed, and all the items they hit have been found.
         let mut pushed: Vec<Item> = Vec::new();
 
-        // Initialize pushed vecs with items directly pushed by the robot
-        for x in self.items.iter() {
-            if x.shape.contains(&robot_next) {
-                newly_pushed.push(x.moved(dir));
-            } else {
-                not_pushed.push(*x);
-            }
-        }
         // Chain reaction of items pushing other items.
         while !newly_pushed.is_empty() {
             if newly_pushed.iter().any(|x| !x.can_move) {
@@ -165,25 +163,18 @@ impl Warehouse {
                 return;
             }
             // Items hit/missed by newly pushed.
-            let mut hits: Vec<Item> = Vec::new();
-            let mut misses: Vec<Item> = Vec::new();
-            // Find all the items newly pushed have hit.
-            for x in not_pushed.iter() {
-                let hit = newly_pushed
+            let got_hit = |x: &Item| -> bool {
+                newly_pushed
                     .iter()
-                    .any(|pusher| pusher.shape.intersects(&x.shape));
-                if hit {
-                    hits.push(x.moved(dir));
-                } else {
-                    misses.push(*x);
-                }
-            }
+                    .any(|pusher| pusher.shape.intersects(&x.shape))
+            };
+            let (hits, misses): (Vec<Item>, Vec<Item>) = not_pushed.into_iter().partition(got_hit);
             // Not pushed has now been divided between hits & misses.
             not_pushed = misses;
             // Newly pushed have been processed.
             pushed.extend(newly_pushed);
             // Now hits have to be processed.
-            newly_pushed = hits;
+            newly_pushed = hits.into_iter().map(|x| x.moved(dir)).collect();
         }
         // All items have been either pushed or not pushed, and no immovables were encountered.
         self.items = not_pushed.into_iter().chain(pushed).collect();
