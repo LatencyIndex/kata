@@ -1,6 +1,6 @@
-use crate::lgl::data::index::Ix2s;
+use crate::lgl::data::{hashmap, index::Ix2s};
 use petgraph::{algo::dijkstra, graphmap::DiGraphMap};
-use std::{collections::HashMap, hash::Hash};
+use std::collections::HashMap;
 
 fn get_numpad() -> Keypad {
     Keypad::from_iter([
@@ -36,10 +36,6 @@ fn get_arrowpad() -> Keypad {
 // I.e. if keypad.get(robot_pos).is_none(), then the robot crashed.
 type Keypad = HashMap<Ix2s, char>;
 
-fn invert_hashmap<K, V: Eq + Hash>(hmap: HashMap<K, V>) -> HashMap<V, K> {
-    hmap.into_iter().map(|(k, v)| (v, k)).collect()
-}
-
 // Next state of the robot arm if it receives cmd.
 fn eval_cmd(keypad: &Keypad, arm: char, cmd: char) -> Option<char> {
     if cmd == 'A' {
@@ -54,7 +50,7 @@ fn eval_cmd(keypad: &Keypad, arm: char, cmd: char) -> Option<char> {
             'v' => Ix2s(0, 1),
             c => panic!("invalid arrowpad button pressed: {c:?}"),
         };
-        let old_pos = invert_hashmap(keypad.clone())[&arm];
+        let old_pos = hashmap::invert(keypad.clone())[&arm];
         let new_pos = old_pos + delta;
         keypad.get(&new_pos).copied()
     }
