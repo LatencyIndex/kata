@@ -1,4 +1,8 @@
-use std::{fmt::Debug, ops::Add, str::FromStr};
+use std::{
+    fmt::Debug,
+    ops::{Add, Mul},
+    str::FromStr,
+};
 
 /// Convert text to a row-major table, with whitespace separated cells.
 pub fn read_rows_whitespace(s: &str) -> Vec<Vec<&str>> {
@@ -52,6 +56,13 @@ impl Add for I2 {
     type Output = I2;
     fn add(self, rhs: Self) -> Self::Output {
         I2(self.0 + rhs.0, self.1 + rhs.1)
+    }
+}
+
+impl Mul<isize> for I2 {
+    type Output = I2;
+    fn mul(self, rhs: isize) -> Self::Output {
+        I2(self.0 * rhs, self.1 * rhs)
     }
 }
 
