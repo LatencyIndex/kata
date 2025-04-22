@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 use crate::lgl::data::index::Ix2s;
 pub use ndarray::{Array2, Ix2};
@@ -34,12 +34,24 @@ pub fn get_mut<T>(arr: &mut Array2<T>, index: Ix2s) -> Option<&mut T> {
 }
 
 /// In an array of shape (X,Y), Y is width (i.e. nb. columns), X is height (i.e. nb. rows)
-pub fn compact_display<T: Debug>(arr: &Array2<T>, sep: &str) -> String {
+pub fn compact_debug<T: Debug>(arr: &Array2<T>, sep: &str) -> String {
     let lines: Vec<String> = arr
         .rows()
         .into_iter()
         .map(|row| {
             let strings: Vec<String> = row.iter().map(|x| format!("{x:?}")).collect();
+            strings.join(sep)
+        })
+        .collect();
+    lines.join("\n")
+}
+
+pub fn compact_display<T: Display>(arr: &Array2<T>, sep: &str) -> String {
+    let lines: Vec<String> = arr
+        .rows()
+        .into_iter()
+        .map(|row| {
+            let strings: Vec<String> = row.iter().map(|x| format!("{x}")).collect();
             strings.join(sep)
         })
         .collect();
