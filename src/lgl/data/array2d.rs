@@ -11,14 +11,22 @@ pub fn to_ndarray<T: Clone>(table: &[Vec<T>]) -> Array2<T> {
     Array2::from_shape_vec((n, m), flat_table).unwrap()
 }
 
+pub fn contains<T>(arr: &Array2<T>, pos: Ix2s) -> bool {
+    let pos: Option<Ix2> = pos.try_into().ok();
+    if let Some(pos) = pos {
+        let shape = arr.raw_dim();
+        pos[0] < shape[0] && pos[1] < shape[1]
+    } else {
+        false
+    }
+}
+
 pub fn get<T>(arr: &Array2<T>, index: Ix2s) -> Option<&T> {
-    let i: usize = index.0.try_into().ok()?;
-    let j: usize = index.1.try_into().ok()?;
-    arr.get((i, j))
+    let index: Ix2 = index.try_into().ok()?;
+    arr.get(index)
 }
 
 pub fn get_mut<T>(arr: &mut Array2<T>, index: Ix2s) -> Option<&mut T> {
-    let i: usize = index.0.try_into().ok()?;
-    let j: usize = index.1.try_into().ok()?;
-    arr.get_mut((i, j))
+    let index: Ix2 = index.try_into().ok()?;
+    arr.get_mut(index)
 }
