@@ -21,13 +21,13 @@ impl<T: Mul + Copy> Mul<T> for Vec2<T> {
 
 type I2 = Vec2<i32>;
 
-fn table_get<T>(table: &Vec<Vec<T>>, p: I2) -> Option<&T> {
+fn table_get<T>(table: &[Vec<T>], p: I2) -> Option<&T> {
     let i: usize = p.0.try_into().ok()?;
     let j: usize = p.1.try_into().ok()?;
     table.get(i).and_then(|v| v.get(j))
 }
 
-fn is_needle(needle: &str, table: &Vec<Vec<char>>, origin: I2, dir: I2) -> bool {
+fn is_needle(needle: &str, table: &[Vec<char>], origin: I2, dir: I2) -> bool {
     let coords = (0i32..).map(|k| origin + dir * k);
     let word = coords
         .map_while(|p| table_get(table, p).copied())
@@ -35,7 +35,7 @@ fn is_needle(needle: &str, table: &Vec<Vec<char>>, origin: I2, dir: I2) -> bool 
     word.eq(needle.chars())
 }
 
-fn get_origins(table: &Vec<Vec<char>>) -> Vec<Vec2<i32>> {
+fn get_origins(table: &[Vec<char>]) -> Vec<Vec2<i32>> {
     let mut origins = Vec::new();
     for (i, line) in table.iter().enumerate() {
         for j in 0..line.len() {
@@ -76,7 +76,7 @@ fn count_word(needle: &str, hay: &str) -> usize {
 /// M . S     S . S
 /// . A . or  . A .
 /// M . S     M . M
-fn is_x_mas(table: &Vec<Vec<char>>, center: I2) -> bool {
+fn is_x_mas(table: &[Vec<char>], center: I2) -> bool {
     let down_right = is_needle("MAS", table, center + Vec2(-1, -1), Vec2(1, 1))
         || is_needle("SAM", table, center + Vec2(-1, -1), Vec2(1, 1));
     let up_right = is_needle("MAS", table, center + Vec2(1, -1), Vec2(-1, 1))
