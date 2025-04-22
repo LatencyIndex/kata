@@ -1,7 +1,12 @@
 use std::{fmt::Debug, fs, path::Path, str::FromStr};
 
+/// Read whitespace-separated cells into a table.
 pub fn to_table(s: &str) -> Vec<Vec<&str>> {
     s.lines().map(|l| l.split_whitespace().collect()).collect()
+}
+
+pub fn to_char_table(s: &str) -> Vec<Vec<char>> {
+    s.lines().map(|l| l.chars().collect()).collect()
 }
 
 pub fn transpose<T>(m: Vec<Vec<T>>) -> Vec<Vec<T>> {
